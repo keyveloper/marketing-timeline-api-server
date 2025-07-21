@@ -1,6 +1,6 @@
 package org.example.marketingtimelineapiserver.repository
 
-import org.example.marketingtimelineapiserver.dto.SaveTimelineAdRequest
+import org.example.marketingtimelineapiserver.dto.UploadTimelineAdRequest
 import org.example.marketingtimelineapiserver.dto.TimelineAdEntity
 import org.example.marketingtimelineapiserver.dto.TimelineAdMetadata
 import org.example.marketingtimelineapiserver.table.TimelineAdTable
@@ -24,7 +24,7 @@ class TimelineRepository {
         }
             .orderBy(TimelineAdTable.createdAt to SortOrder.DESC)
             .limit(PAGE_SIZE)
-            .map { TimelineAdMetadata.from(it) }
+            .map { TimelineAdMetadata.fromEntity(it) }
     }
 
     fun findBeforeByInfluencer(
@@ -37,7 +37,7 @@ class TimelineRepository {
         }
             .orderBy(TimelineAdTable.createdAt to SortOrder.DESC)
             .limit(PAGE_SIZE)
-            .map { TimelineAdMetadata.from(it) }
+            .map { TimelineAdMetadata.fromEntity(it) }
     }
 
     fun findAfterByInfluencer(
@@ -50,15 +50,15 @@ class TimelineRepository {
         }
             .orderBy(TimelineAdTable.createdAt to SortOrder.ASC)
             .limit(PAGE_SIZE)
-            .map { TimelineAdMetadata.from(it) }
+            .map { TimelineAdMetadata.fromEntity(it) }
     }
 
-    fun save(request: SaveTimelineAdRequest): TimelineAdMetadata {
+    fun save(request: UploadTimelineAdRequest): TimelineAdMetadata {
         val entity = TimelineAdEntity.new {
             influencerId = request.influencerId
             advertisementId = request.advertisementId
         }
-        return TimelineAdMetadata.from(entity)
+        return TimelineAdMetadata.fromEntity(entity)
     }
 
     fun existsByInfluencerIdAndAdvertisementId(

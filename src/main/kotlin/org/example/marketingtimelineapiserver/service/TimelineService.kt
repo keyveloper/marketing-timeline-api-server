@@ -2,8 +2,7 @@ package org.example.marketingtimelineapiserver.service
 
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.example.marketingtimelineapiserver.dto.GetTimelineAdsResult
-import org.example.marketingtimelineapiserver.dto.SaveTimelineAdRequest
-import org.example.marketingtimelineapiserver.dto.TimelineAdMetadata
+import org.example.marketingtimelineapiserver.dto.UploadTimelineAdRequest
 import org.example.marketingtimelineapiserver.dto.UploadTimelineAdResult
 import org.example.marketingtimelineapiserver.enums.MSAServiceErrorCode
 import org.example.marketingtimelineapiserver.enums.TimelineCursor
@@ -109,7 +108,7 @@ class TimelineService(
                 }
 
                 val metadata = timelineRepository.save(
-                    SaveTimelineAdRequest.of(
+                    UploadTimelineAdRequest.of(
                         influencerId = influencerId,
                         advertisementId = advertisementId
                     )

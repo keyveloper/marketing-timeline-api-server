@@ -10,23 +10,7 @@ data class TimelineAdMetadata(
     val lastModifiedAt: Long
 ) {
     companion object {
-        fun of(
-            id: Long,
-            influencerId: UUID,
-            advertisementId: Long,
-            createdAt: Long,
-            lastModifiedAt: Long
-        ): TimelineAdMetadata {
-            return TimelineAdMetadata(
-                id = id,
-                influencerId = influencerId,
-                advertisementId = advertisementId,
-                createdAt = createdAt,
-                lastModifiedAt = lastModifiedAt
-            )
-        }
-
-        fun from(entity: TimelineAdEntity): TimelineAdMetadata {
+        fun fromEntity(entity: TimelineAdEntity): TimelineAdMetadata {
             return TimelineAdMetadata(
                 id = entity.id.value,
                 influencerId = entity.influencerId,

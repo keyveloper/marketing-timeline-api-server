@@ -2,7 +2,7 @@ package org.example.marketingtimelineapiserver.dto
 
 import java.util.UUID
 
-data class SaveTimelineAdRequest(
+data class UploadTimelineAdRequest(
     val influencerId: UUID,
     val advertisementId: Long
 ) {
@@ -10,8 +10,8 @@ data class SaveTimelineAdRequest(
         fun of(
             influencerId: UUID,
             advertisementId: Long
-        ): SaveTimelineAdRequest {
-            return SaveTimelineAdRequest(
+        ): UploadTimelineAdRequest {
+            return UploadTimelineAdRequest(
                 influencerId = influencerId,
                 advertisementId = advertisementId
             )
