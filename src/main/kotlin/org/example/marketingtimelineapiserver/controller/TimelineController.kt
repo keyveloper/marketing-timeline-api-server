@@ -2,9 +2,12 @@ package org.example.marketingtimelineapiserver.controller
 
 import org.example.marketingtimelineapiserver.dto.GetTimelineAdsApiRequest
 import org.example.marketingtimelineapiserver.dto.GetTimelineAdsResponseFromServer
+import org.example.marketingtimelineapiserver.dto.UploadTimelineAdApiRequest
+import org.example.marketingtimelineapiserver.dto.UploadTimelineAdResponseFromServer
 import org.example.marketingtimelineapiserver.service.TimelineService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.util.UUID
 
 @RestController
 @RequestMapping("/api/v1/timeline")
@@ -14,14 +17,12 @@ class TimelineController(
 
     @GetMapping("/ads")
     fun getTimelineAds(
-        @RequestParam influencerId: String,
-        @RequestParam(required = false) cursor: Long?,
-        @RequestParam(defaultValue = "20") limit: Int
+        @ModelAttribute request: GetTimelineAdsApiRequest
     ): ResponseEntity<GetTimelineAdsResponseFromServer> {
         val result = timelineService.getTimelineAds(
-            influencerId = influencerId,
-            cursor = cursor,
-            limit = limit
+            influencerId = request.influencerId,
+            cursor = request.cursor,
+            pivotTime = request.pivotTime
         )
 
         return ResponseEntity.ok(
@@ -30,27 +31,23 @@ class TimelineController(
     }
 
     @PostMapping("/ads")
-    fun saveTimelineAd(
-        @RequestParam influencerId: String,
-        @RequestParam advertisementId: String
-    ): ResponseEntity<Map<String, Any>> {
-        val metadata = timelineService.saveTimelineAd(
-            influencerId = influencerId,
-            advertisementId = advertisementId
+    fun uploadTimelineAd(
+        @RequestBody request: UploadTimelineAdApiRequest
+    ): ResponseEntity<UploadTimelineAdResponseFromServer> {
+        val result = timelineService.saveTimelineAd(
+            influencerId = request.influencerId,
+            advertisementId = request.advertisementId
         )
 
         return ResponseEntity.ok(
-            mapOf(
-                "success" to true,
-                "data" to metadata
-            )
+            UploadTimelineAdResponseFromServer.success(result)
         )
     }
 
     @DeleteMapping("/ads")
     fun deleteTimelineAd(
-        @RequestParam influencerId: String,
-        @RequestParam advertisementId: String
+        @RequestParam influencerId: UUID,
+        @RequestParam advertisementId: Long
     ): ResponseEntity<Map<String, Any>> {
         timelineService.deleteTimelineAd(
             influencerId = influencerId,

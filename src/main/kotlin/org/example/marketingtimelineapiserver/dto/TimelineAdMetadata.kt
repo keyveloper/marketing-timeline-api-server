@@ -1,17 +1,19 @@
 package org.example.marketingtimelineapiserver.dto
 
+import java.util.UUID
+
 data class TimelineAdMetadata(
     val id: Long,
-    val influencerId: String,
-    val advertisementId: String,
+    val influencerId: UUID,
+    val advertisementId: Long,
     val createdAt: Long,
     val lastModifiedAt: Long
 ) {
     companion object {
         fun of(
             id: Long,
-            influencerId: String,
-            advertisementId: String,
+            influencerId: UUID,
+            advertisementId: Long,
             createdAt: Long,
             lastModifiedAt: Long
         ): TimelineAdMetadata {

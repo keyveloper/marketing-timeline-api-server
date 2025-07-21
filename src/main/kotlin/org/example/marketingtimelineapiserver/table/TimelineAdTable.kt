@@ -1,10 +1,11 @@
 package org.example.marketingtimelineapiserver.table
 
 import org.jetbrains.exposed.sql.Column
+import java.util.UUID
 
 object TimelineAdTable : BaseDateLongIdTable("timeline_ad") {
-    val influencerId: Column<String> = varchar("influencer_id", 36)
-    val advertisementId: Column<String> = varchar("advertisement_id", 36)
+    val influencerId: Column<UUID> = uuid("influencer_id")
+    val advertisementId: Column<Long> = long("advertisement_id")
 
     init {
         uniqueIndex(influencerId, advertisementId)
