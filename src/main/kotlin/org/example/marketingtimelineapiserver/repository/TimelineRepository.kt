@@ -5,7 +5,9 @@ import org.example.marketingtimelineapiserver.dto.TimelineAdEntity
 import org.example.marketingtimelineapiserver.dto.TimelineAdMetadata
 import org.example.marketingtimelineapiserver.table.TimelineAdTable
 import org.jetbrains.exposed.sql.SortOrder
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.and
+import org.jetbrains.exposed.sql.deleteWhere
 import org.springframework.stereotype.Repository
 import java.util.UUID
 
@@ -74,13 +76,11 @@ class TimelineRepository {
     fun deleteByInfluencerIdAndAdvertisementId(
         influencerId: UUID,
         advertisementId: Long
-    ): Boolean {
-        val entity = TimelineAdEntity.find {
+    ): Int {
+        val deletedCount = TimelineAdTable.deleteWhere {
             (TimelineAdTable.influencerId eq influencerId) and
                     (TimelineAdTable.advertisementId eq advertisementId)
-        }.firstOrNull()
-
-        entity?.delete()
-        return entity != null
+        }
+        return deletedCount
     }
 }

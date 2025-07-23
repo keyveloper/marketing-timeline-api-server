@@ -1,0 +1,69 @@
+### Timeline API Test Suite
+### Base URL: http://localhost:8086
+
+### 1. Upload Timeline Ad (POST)
+POST http://localhost:8086/api/v1/timeline/ads
+Content-Type: application/json
+
+{
+  "influencerId": "550e8400-e29b-41d4-a716-446655440000",
+  "advertisementId": 1001
+}
+
+### 2. Upload Timeline Ad - Different Ad (POST)
+POST http://localhost:8086/api/v1/timeline/ads
+Content-Type: application/json
+
+{
+  "influencerId": "550e8400-e29b-41d4-a716-446655440000",
+  "advertisementId": 1002
+}
+
+### 3. Upload Timeline Ad - Different User (POST)
+POST http://localhost:8086/api/v1/timeline/ads
+Content-Type: application/json
+
+{
+  "influencerId": "660e8400-e29b-41d4-a716-446655440000",
+  "advertisementId": 1001
+}
+
+### 4. Upload Timeline Ad - Duplicate (Should Fail)
+POST http://localhost:8086/api/v1/timeline/ads
+Content-Type: application/json
+
+{
+  "influencerId": "550e8400-e29b-41d4-a716-446655440000",
+  "advertisementId": 1001
+}
+
+### 5. Get Timeline Ads - INIT (GET)
+GET http://localhost:8086/api/v1/timeline/ads?influencerId=550e8400-e29b-41d4-a716-446655440000&cursor=INIT
+
+### 6. Get Timeline Ads - PREV with pivotTime (GET)
+# Replace {pivotTime} with createdAt value from previous response
+GET http://localhost:8086/api/v1/timeline/ads?influencerId=550e8400-e29b-41d4-a716-446655440000&cursor=PREV&pivotTime=1733500000000
+
+### 7. Get Timeline Ads - NEXT with pivotTime (GET)
+# Replace {pivotTime} with createdAt value from previous response
+GET http://localhost:8086/api/v1/timeline/ads?influencerId=550e8400-e29b-41d4-a716-446655440000&cursor=NEXT&pivotTime=1733400000000
+
+### 8. Get Timeline Ads - Different User INIT (GET)
+GET http://localhost:8086/api/v1/timeline/ads?influencerId=660e8400-e29b-41d4-a716-446655440000&cursor=INIT
+
+### 9. Get Timeline Ads - PREV without pivotTime (Should Fail)
+GET http://localhost:8086/api/v1/timeline/ads?influencerId=550e8400-e29b-41d4-a716-446655440000&cursor=PREV
+
+### 10. Get Timeline Ads - NEXT without pivotTime (Should Fail)
+GET http://localhost:8086/api/v1/timeline/ads?influencerId=550e8400-e29b-41d4-a716-446655440000&cursor=NEXT
+
+### 11. Delete Timeline Ad (DELETE)
+DELETE http://localhost:8086/api/v1/timeline/ads?influencerId=550e8400-e29b-41d4-a716-446655440000&advertisementId=1001
+
+### 12. Delete Timeline Ad - Not Found (Should Fail)
+DELETE http://localhost:8086/api/v1/timeline/ads?influencerId=550e8400-e29b-41d4-a716-446655440000&advertisementId=9999
+
+### 13. Get Timeline Ads After Delete - INIT (GET)
+GET http://localhost:8086/api/v1/timeline/ads?influencerId=550e8400-e29b-41d4-a716-446655440000&cursor=INIT
+
+###

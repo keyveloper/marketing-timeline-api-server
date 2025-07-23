@@ -6,6 +6,7 @@ import org.example.marketingtimelineapiserver.dto.UploadTimelineAdRequest
 import org.example.marketingtimelineapiserver.dto.UploadTimelineAdResult
 import org.example.marketingtimelineapiserver.enums.MSAServiceErrorCode
 import org.example.marketingtimelineapiserver.enums.TimelineCursor
+import org.example.marketingtimelineapiserver.exception.DeleteTimelineAdException
 import org.example.marketingtimelineapiserver.exception.MSAServerException
 import org.example.marketingtimelineapiserver.repository.TimelineRepository
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -132,24 +133,22 @@ class TimelineService(
     fun deleteTimelineAd(
         influencerId: UUID,
         advertisementId: Long
-    ): Boolean {
+    ): Int {
         try {
             return transaction {
-                val deleted = timelineRepository.deleteByInfluencerIdAndAdvertisementId(
+                val deleteCount = timelineRepository.deleteByInfluencerIdAndAdvertisementId(
                     influencerId = influencerId,
                     advertisementId = advertisementId
                 )
 
-                if (!deleted) {
-                    throw MSAServerException(
-                        httpStatus = HttpStatus.NOT_FOUND,
-                        msaServiceErrorCode = MSAServiceErrorCode.NOT_FOUND_TIMELINE_AD,
-                        logics = "TimelineService.deleteTimelineAd",
-                        message = "Timeline ad not found"
+                if (deleteCount == 0) {
+                    throw DeleteTimelineAdException(
+                        influencerId = influencerId,
+                        advertisementId = advertisementId
                     )
                 }
 
-                true
+                deleteCount
             }
         } catch (e: MSAServerException) {
             throw e
